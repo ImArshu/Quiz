@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuestionPaper</title>
+
+    <style>
+        body {
+            background-color: rgb(144, 189, 189);
+        }
+
+        h1 {
+            background-color: rgb(175, 192, 136);
+            text-align: center;
+        }
+
+        #btn:hover {
+            background-color: rgb(255, 0, 34);
+            color: white;
+            padding-right: 40px;
+            padding-left: 40px;
+        }
+       
+    </style>
+</head>
+
+<body>
+    <h1>Online MCQ Exam</h1>
+    <div class="container">
+        <div id="qblock" style="display: block;">
+            <div class="UserInput">
+                Enter Your Name:
+                <input type="text" name="" id="userName" placeholder="Enter Your Full Name">
+            </div>
+            <div class="Question">
+                <form id="mcqForm">
+                    <p id="question"></p>
+                    <p id="option"></p>
+                    <button type="submit" id="btn">Submit</button>
+                </form>
+            </div>
+        </div>
+        <div class="Result" id="resultSection" style="display: none;">
+            <p><strong>Username:</strong> <span id="usernameResult"></span></p>
+            <p><strong>Total Marks:</strong> <span id="totalMarks"></span></p>
+            <p><strong>Your Score:</strong> <span id="yourScore"></span></p>
+            <p><strong>Percentage:</strong> <span id="percentage"></span>%</p>
+        </div>
+    </div>
+    <script>
+        let userName = document.getElementById('userName');
+        let usernameResult = document.getElementById('usernameResult');
+        let resultSection = document.getElementById('resultSection');
+        let totalMarks = document.getElementById('totalMarks');
+        let yourScore = document.getElementById('yourScore');
+        let percentage = document.getElementById('percentage');
+        let qblock = document.getElementById('qblock');
+        let qSet = [
+
+            {
+                question: 'What is the capital of India?',
+                options: ['Delhi', 'Mumbai', 'Bangalore', 'Kolkata'],
+                correctAnswer: 'Delhi'
+            },
+            {
+                question: 'What is the capital of France?',
+                options: ['Berlin', 'Madrid', 'Paris', 'Rome'],
+                correctAnswer: 'Paris'
+            },
+            {
+                question: 'What is the Color of Rose?',
+                options: ['Blue', 'Green', 'Black', 'Red'],
+                correctAnswer: 'Red'
+            },
+            {
+                question: 'Where is 2023 World Cup Held?',
+                options: ['China', 'England', 'India', 'Australia'],
+                correctAnswer: 'India'
+            },
+            {
+                question: 'MS-Word is an example of _____',
+                options: ['An operating system', 'A processing device', ' An input device', 'Application software'],
+                correctAnswer: 'Application software'
+            },
+            {
+                question: 'What is the pH value of the human body?',
+                options: ['9.2 to 9.8', '7.0 to 7.8', '6.1 to 6.3', '5.4 to 5.6'],
+                correctAnswer: '7.0 to 7.8'
+            },
+            {
+                question: '______ is Secondary Type of Memory',
+                options: ['RAM', 'ROM', 'USB', 'MEMORY'],
+                correctAnswer: 'ROM'
+            },
+            {
+                question: 'How many days are there in a week',
+                options: ['7', '8', '9', '5'],
+                correctAnswer: '7'
+            },
+            {
+                question: 'How many letters are there in the English alphabet?',
+                options: ['24', '23', '22', '26'],
+                correctAnswer: '26'
+            },
+            {
+                question: 'Rainbow consist of how many colors?',
+                options: ['1', '2', '5', '7'],
+                correctAnswer: '7'
+            }
+
+        ];
+
+        function displayQuestions() {
+            let question = document.getElementById('question');
+            qSet.forEach((data, index) => {
+                let qDiv = document.createElement('div');
+                question.classList.add('qDiv');
+                qDiv.innerHTML = `<p>${index + 1}. ${data.question}</p>`;
+                data.options.forEach((option, i) => {
+                    qDiv.innerHTML += `
+                        <input type="radio" id="q${index}option${i}" name="q${index}" value="${option}">
+                        <label for="q${index}option${i}">${option}</label>
+                    `;
+                });
+                question.appendChild(qDiv);
+            });
+        }
+
+        document.getElementById('mcqForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let selectedAnswers = [];
+            let correctAnswers = 0;
+            qSet.forEach((questionObj, index) => {
+                let selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selectedOption) {
+                    selectedAnswers.push(selectedOption.value);
+                    if (selectedOption.value === questionObj.correctAnswer) {
+                        correctAnswers++;
+                    }
+                } else {
+                    selectedAnswers.push('Not answered');
+                }
+            });
+            let totMarks = qSet.length;
+            let percentageValue = (correctAnswers / totMarks) * 100;
+            usernameResult.innerText = userName.value;
+            totalMarks.innerText = totMarks;
+            yourScore.innerText = correctAnswers;
+            percentage.innerText = percentageValue;
+            resultSection.style.display = 'block';
+            qblock.style.display = 'none';
+        });
+
+        displayQuestions();
+    </script>
+</body>
+
+</html>
